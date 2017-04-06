@@ -3,7 +3,7 @@
  * (c) 2017 idietmoran <idietmoran@gmail.com>
  * License: MIT
  */
-const request = require('../bin/request');
+const request = require('./bin/request');
 const url = require('url');
 
 class Twitch {

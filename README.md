@@ -9,6 +9,7 @@ Create the a new object with the correct parameters to use the class.
 
 The package [dotenv](https://github.com/motdotla/dotenv) is recommended for keeping your client information secret.
 ```js
+const Twitch = require("twitch.tv-api");
 const twitch = new Twitch({
     id: "YOUR ID HERE"
     secret: "YOUR SECRET HERE"
@@ -31,6 +32,7 @@ const twitch = new Twitch({
 The twitch api module uses promises to resolve/reject data.
 
 ```js
+const Twitch = require("twitch.tv-api");
 const twitch = new Twitch({
     id: "YOUR ID HERE"
     secret: "YOUR SECRET HERE"
@@ -61,7 +63,8 @@ Here is an example of routing the requests through a [Hapi](https://github.com/h
 ```js
 require("dotenv").config();
 const Hapi = require('hapi');
-const Twitch = require("twitch-API");
+const Twitch = require("twitch.tv-api");
+
 
 const server = new Hapi.Server({})
 

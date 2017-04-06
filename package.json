@@ -1,7 +1,7 @@
 {
-  "name": "twitch-api",
+  "name": "twitch.tv-api",
   "version": "1.0.0",
-  "description": "easy interaction with the twitch api",
+  "description": "easy node interaction with the twitch api, with promises",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
