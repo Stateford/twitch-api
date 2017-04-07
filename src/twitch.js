@@ -1,12 +1,12 @@
 /**
- * @license twitch.js
- * (c) 2017 idietmoran <idietmoran@gmail.com>
+ * @license twitch-desktop-app
+ * (c) 2016 idietmoran <idietmoran@gmail.com>
  * License: MIT
  */
-const request = require('./bin/request');
+const request = require('../bin/request');
 const url = require('url');
 
-class Twitch {
+class TwitchCtrl {
     /**
     * @description : Creates our twitch class
     * @param {Object<id, secret>} options : pases our client id and secret to the constructor
@@ -132,6 +132,7 @@ class Twitch {
             // make our request
             this.makeRequest(url)
                 .then(data => {
+                    data = JSON.parse(data);
                     let streamUrl = `http://usher.twitch.tv/api/channel/hls/${user}.m3u8?player=twitchweb&&token=${data.token}&sig=${data.sig}&allow_audio_only=true&allow_source=true&type=any&p={random}`
 
                     if(data.error === "Not Found") {
@@ -146,4 +147,4 @@ class Twitch {
 
 }
 
-module.exports = Twitch;
+module.exports = TwitchCtrl;
