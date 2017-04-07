@@ -128,6 +128,7 @@ class TwitchCtrl {
     getStreamUrl(user) {
         return new Promise((resolve, reject) => {
             // set our URL for working with the api
+            user = user.toLowerCase();
             let url = `http://api.twitch.tv/api/channels/${user}/access_token`;
             // make our request
             this.makeRequest(url)
