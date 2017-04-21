@@ -1,6 +1,6 @@
 {
   "name": "twitch.tv-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "easy node interaction with the twitch api, with promises",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,8 @@
   ],
   "author": "idietmoran <idietmoran@gmail.com>",
   "repository": "idietmoran/twitch-api",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.0"
+  }
 }
