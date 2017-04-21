@@ -1,29 +1,21 @@
 /**
- * @license twitch.js
- * (c) 2017 idietmoran <idietmoran@gmail.com>
- * License: MIT
- */
-/**
  * @description : Script to make requests to a server
 */
-// Modules
-// =======
+
 const http = require('http');
 const https = require('https');
 const url = require('url');
+const Promise = require('bluebird');
 
+function Request() {};
 
-// TODO: add input for headers
-
-class Request {
-    /**
-     * @description : makes a request to protocol http
-     * @param {Object} options : passes an object to http.request
-     * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
-    */
-    // TODO: add a way to include POST data;
-    static http(options) {
-        return new Promise((resolve, reject) => {
+/**
+ * @description : makes a request to protocol http
+ * @param {Object} options : passes an object to http.request
+ * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
+*/
+Request.http = function(options) {
+    return new Promise((resolve, reject) => {
             let data = "";
             let req = http.request(options, res => {
                 res.setEncoding('utf8');
@@ -40,15 +32,14 @@ class Request {
             });
             req.end();
         })
-    }
-    /**
-     * @description : makes a request to protocol https
-     * @param {object} options : passes an object to https.request
-     * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
-    */
-    // TODO : add a way to take POST params
-    static https(options) {
-        return new Promise((resolve, reject) => {
+}
+/**
+ * @description : makes a request to protocol https
+ * @param {object} options : passes an object to https.request
+ * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
+*/
+Request.https = function(options) {
+    return new Promise((resolve, reject) => {
             let data = "";
             let req = https.request(options, res => {
                 res.setEncoding('utf8');
@@ -67,15 +58,17 @@ class Request {
 
             req.end();
         })
-    }
-    /**
-     * @description : gets a url as an argument and makes a POST request
-     * @param {String} link : enter an URL
-     * @param {Object} params: post request
-     * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
-    */
-    static post(link, params) {
-        return new Promise((resolve, reject) => {
+}
+
+/**
+ * @description : gets a url as an argument and makes a POST request
+ * @param {String} link : enter an URL
+ * @param {Object} params: post request
+ * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
+*/
+
+Request.post = function(link, params) {
+    return new Promise((resolve, reject) => {
             let options = url.parse(link);
             options.method = "POST";
 
@@ -96,16 +89,15 @@ class Request {
             }
 
         });
-    }
-
-    /**
-     * @description : gets a url as an argument and returns a GET request
-     * @param {String} link : enter an URL
-     * @param {Object} headers : defaults to null, headers to send
-     * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
-    */
-    static get(link, headers=null) {
-        return new Promise((resolve, reject) => {
+}
+/**
+ * @description : gets a url as an argument and returns a GET request
+ * @param {String} link : enter an URL
+ * @param {Object} headers : defaults to null, headers to send
+ * @returns {Promise.<string, Error>} : resolves http request, or rejects an error
+*/
+Request.get = function(link, headers=null) {
+    return new Promise((resolve, reject) => {
             // parse the link into a readable format for our other functions
             let options = url.parse(link);
             if(headers !== null) {
@@ -128,8 +120,6 @@ class Request {
                     break;
             }
         });
-
-        };
 }
 
 module.exports = Request;
