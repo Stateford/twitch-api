@@ -26,6 +26,9 @@ const twitch = new Twitch({
 | `.getTopGames()`        | Returns the top games |
 | `.getUsersByGame(game)`  |  Returns users by game |
 | `.getStreamUrl(user)`    | Returns the RTMP stream URL |
+| `.searchChannels(query, limit, offset)` | Returns a list of channels |
+| `.searchStreams(query, limit, offset)` | Returns a list of streams |
+| `.searchGames(query, type, live)` | Returns a list of games |
 
 ### Using
 
