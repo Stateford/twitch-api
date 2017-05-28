@@ -145,4 +145,70 @@ TwitchCtrl.prototype.getStreamUrl = function(user) {
     });
 }
 
+/**
+* @description : search for channels based on specified query parameter
+* @param {String} query : a channel is returned if the query parameter is matched entirely or partially, in the channel description or game name
+* @param {Integer} limit : maximum number of objects to return, sorted by number of followers {Default: 25} {Maximum: 100}
+* @param {Integer} offset : object offset for pagination of results {Default: 0}
+* @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
+*/
+TwitchCtrl.prototype.searchChannels = function(query, limit = 25, offset = 0) {
+    return new Promise((resolve, reject) => {
+        // set our URL for working with the api
+        query = encodeURIComponent(query);
+        let url = `https://api.twitch.tv/kraken/search/channels?query=${query}&limit=${limit}&offset=${offset}`;
+        // make our request
+        this.makeRequest(url)
+            .then(data => {
+                // resolve our data and parse as a JSON
+                resolve(JSON.parse(data));
+            })
+            .catch(reject);
+    });
+}
+
+/**
+* @description : search for streams based on specified query parameter
+* @param {String} query : a stream is returned if the query parameter is matched entirely or partially, in the channel description or game name
+* @param {Integer} limit : maximum number of objects to return, sorted by number of followers {Default: 25} {Maximum: 100}
+* @param {Integer} offset : object offset for pagination of results {Default: 0}
+* @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
+*/
+TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 100) {
+    return new Promise((resolve, reject) => {
+        // set our URL for working with the api
+        query = encodeURIComponent(query);
+        let url = `https://api.twitch.tv/kraken/search/streams?query=${query}&limit=${limit}&offset=${offset}`;
+        // make our request
+        this.makeRequest(url)
+            .then(data => {
+                // resolve our data and parse as a JSON
+                resolve(JSON.parse(data));
+            })
+            .catch(reject);
+    });
+}
+
+/**
+* @description : search for games based on specified query parameter
+* @param {String} query : a url-encoded search query
+* @param {String} type : {suggest}: suggests a list of games similar to query, e.g. {star} query might suggest {StarCraft II: Wings of Liberty}
+* @param {Boolean} live : if true, only returns games that are live on at least one channel  {Default: true}
+* @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
+*/
+TwitchCtrl.prototype.searchGames = function(query, type = 'suggest', live = true) {
+    return new Promise((resolve, reject) => {
+        // set our URL for working with the api
+        query = encodeURIComponent(query);
+        let url = `https://api.twitch.tv/kraken/search/games?query=${query}&type=${type}&live=${live}`;
+        // make our request
+        this.makeRequest(url)
+            .then(data => {
+                // resolve our data and parse as a JSON
+                resolve(JSON.parse(data));
+            })
+            .catch(reject);
+    });
+}
+
 module.exports = TwitchCtrl;
