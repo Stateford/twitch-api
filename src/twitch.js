@@ -134,13 +134,7 @@ TwitchCtrl.prototype.getTopGames = function(options) {
 TwitchCtrl.prototype.getUsersByGame = function(game) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
-        let url = "https://api.twitch.tv/kraken/games/top";
-
-        if(!options) {
-            _buildOptions(options, function(data) => {
-                url += data;
-            })
-        }
+        let url = `https://api.twitch.tv/kraken/streams/?game=${game}`;
         // make our request
         this.makeRequest(url)
             .then(data => {
