@@ -78,12 +78,12 @@ TwitchCtrl.prototype.getFeaturedStreams = function() {
 * @param {String} options.language : only shows streams of a certain language. Permitted values are locale ID strings, e.g. {en}, {fi}, {es-mx}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopStreams = function(options = null) {
+TwitchCtrl.prototype.getTopStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/games/top";
 
-        if(!options) {
+        if(options) {
             _buildOptions(options, function(data) => {
                 url += data;
             })
@@ -105,12 +105,12 @@ TwitchCtrl.prototype.getTopStreams = function(options = null) {
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopGames = function(options = null) {
+TwitchCtrl.prototype.getTopGames = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/games/top";
 
-        if(!options) {
+        if(options) {
             _buildOptions(options, function(data) => {
                 url += data;
             })
