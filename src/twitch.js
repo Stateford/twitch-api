@@ -243,13 +243,13 @@ TwitchCtrl.prototype.searchGames = function(query, type = 'suggest', live = true
 }
 
 function _buildOptions(options, callback) {
-    Object.keys(options).reduce((params, option, index) => {
+    callback(Object.keys(options).reduce((params, option, index) => {
         const encodedParam = `${encodeURIComponent(option)}=${encodeURIComponent(options[option])}`;
         if(index === 0) {
-            return callback(`?${encodedParam}`);
+            return `?${encodedParam}`;
         }
-        return callback(`${params}&${encodedParam}`);
-    }, '');
+        return `${params}&${encodedParam}`;
+    }, ''));
 }
 
 module.exports = TwitchCtrl;
