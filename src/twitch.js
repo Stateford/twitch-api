@@ -53,10 +53,15 @@ TwitchCtrl.prototype.getUser = function(username) {
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolve JSON data or rejects an error
 */
-TwitchCtrl.prototype.getFeaturedStreams = function() {
+TwitchCtrl.prototype.getFeaturedStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/streams/featured"
+        if(options) {
+            _buildOptions(options, data => {
+                url += data;
+            })
+        }
         // make our request
         this.makeRequest(url)
             .then(data => {
@@ -81,10 +86,10 @@ TwitchCtrl.prototype.getFeaturedStreams = function() {
 TwitchCtrl.prototype.getTopStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
-        let url = "https://api.twitch.tv/kraken/games/top";
+        let url = "https://api.twitch.tv/kraken/streams";
 
         if(options) {
-            _buildOptions(options, function(data) => {
+            _buildOptions(options, data => {
                 url += data;
             })
         }
@@ -111,7 +116,7 @@ TwitchCtrl.prototype.getTopGames = function(options) {
         let url = "https://api.twitch.tv/kraken/games/top";
 
         if(options) {
-            _buildOptions(options, function(data) => {
+            _buildOptions(options, data => {
                 url += data;
             })
         }
