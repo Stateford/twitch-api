@@ -4,8 +4,8 @@
 ## Twitch Class
 
 ### Starting
-The class object takes two parameters in the object, the client ID and the client secret.  
-Create the a new object with the correct parameters to use the class.  
+The class object takes two parameters in the object, the client ID and the client secret.
+Create the a new object with the correct parameters to use the class.
 
 The package [dotenv](https://github.com/motdotla/dotenv) is recommended for keeping your client information secret.
 ```js
@@ -21,9 +21,9 @@ const twitch = new Twitch({
 | METHOD  | DESCRIPTION |
 |:--------:|:-----------:|
 | `.getUser(user)` | Returns information about a user |
-| `.getFeaturedStreams()` | Returns twitch's featured streams |
-| `.getTopStreams()`      | Returns the current top streams |
-| `.getTopGames()`        | Returns the top games |
+| `.getFeaturedStreams(options)` | Returns twitch's featured streams |
+| `.getTopStreams(options)`      | Returns the current top streams |
+| `.getTopGames(options)`        | Returns the top games |
 | `.getUsersByGame(game)`  |  Returns users by game |
 | `.getStreamUrl(user)`    | Returns the RTMP stream URL |
 | `.searchChannels(query, limit, offset)` | Returns a list of channels |
@@ -42,6 +42,24 @@ const twitch = new Twitch({
 });
 
 twitch.getUser("idietmoran")
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// making requests with optional parameters
+const optionalParams = {game: 'StarCraft: Brood War', language: 'es'};
+twitch.getTopStreams(optionalParams)
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+twitch.getFeaturedStreams({limit: 5})
     .then(data => {
         console.log(data);
     })

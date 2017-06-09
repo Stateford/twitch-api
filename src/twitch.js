@@ -27,7 +27,6 @@ TwitchCtrl.prototype.makeRequest = function(http) {
     });
 }
 
-
 /**
 * @description : gets user data from the api
 * @param {String} username : the username we want information from
@@ -49,12 +48,20 @@ TwitchCtrl.prototype.getUser = function(username) {
 
 /**
 * @description : Gets featured streams
+* @param {Hash} options : optional query params
+* @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
+* @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolve JSON data or rejects an error
 */
-TwitchCtrl.prototype.getFeaturedStreams = function() {
+TwitchCtrl.prototype.getFeaturedStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/streams/featured"
+        if(options) {
+            _buildOptions(options, data => {
+                url += data;
+            })
+        }
         // make our request
         this.makeRequest(url)
             .then(data => {
@@ -66,12 +73,26 @@ TwitchCtrl.prototype.getFeaturedStreams = function() {
 
 /**
 * @description : Makes an api call to retrieve all top streams on twitch
+* @param {Hash} options : optional query params
+* @param {String} options.game : streams categorized under {game}
+* @param {String} options.channel : streams from a comma separated list of channels
+* @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
+* @param {Integer} options.offset : object offset for pagination {Default: 0}
+* @param {Integer} options.client_id : only shows streams from applications of {client_id}
+* @param {String} options.stream_type : only shows streams from a certain type. Permitted values: {all}, {playlist}, {live}
+* @param {String} options.language : only shows streams of a certain language. Permitted values are locale ID strings, e.g. {en}, {fi}, {es-mx}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopStreams = function() {
+TwitchCtrl.prototype.getTopStreams = function(options) {
     return new Promise((resolve, reject) => {
-            // set our URL for working with the api
-            let url = "https://api.twitch.tv/kraken/streams"
+        // set our URL for working with the api
+        let url = "https://api.twitch.tv/kraken/streams";
+
+        if(options) {
+            _buildOptions(options, data => {
+                url += data;
+            })
+        }
             // make our request
             this.makeRequest(url)
                 .then(data => {
@@ -84,12 +105,22 @@ TwitchCtrl.prototype.getTopStreams = function() {
 
 /**
 * @description : Makes an API call to top games on twitch
+* @param {Hash} options : optional query params
+* @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
+* @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopGames = function() {
+TwitchCtrl.prototype.getTopGames = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
-        let url = "https://api.twitch.tv/kraken/games/top"
+        let url = "https://api.twitch.tv/kraken/games/top";
+
+        if(options) {
+            _buildOptions(options, data => {
+                url += data;
+            })
+        }
+
         // make our request
         this.makeRequest(url)
             .then(data => {
@@ -209,6 +240,16 @@ TwitchCtrl.prototype.searchGames = function(query, type = 'suggest', live = true
             })
             .catch(reject);
     });
+}
+
+function _buildOptions(options, callback) {
+    callback(Object.keys(options).reduce((params, option, index) => {
+        const encodedParam = `${encodeURIComponent(option)}=${encodeURIComponent(options[option])}`;
+        if(index === 0) {
+            return `?${encodedParam}`;
+        }
+        return `${params}&${encodedParam}`;
+    }, ''));
 }
 
 module.exports = TwitchCtrl;
