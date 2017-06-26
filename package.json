@@ -1,6 +1,6 @@
 {
   "name": "twitch.tv-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "easy node interaction with the twitch api, with promises",
   "main": "index.js",
   "scripts": {
