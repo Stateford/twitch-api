@@ -19,7 +19,10 @@ function TwitchCtrl(options) {
 TwitchCtrl.prototype.makeRequest = function(http) {
     return new Promise((resolve, reject) => {
         // set the headers in our request
-            let headers = { "Client-ID" : this.id };
+            let headers = {
+              "Client-ID" : this.id,
+              "Accept": "application/vnd.twitchtv.v5+json"
+            };
             // use our request module to make a http request
             request.get(http, headers)
                 .then(resolve)
@@ -74,13 +77,12 @@ TwitchCtrl.prototype.getFeaturedStreams = function(options) {
 /**
 * @description : Makes an api call to retrieve all top streams on twitch
 * @param {Hash} options : optional query params
-* @param {String} options.game : streams categorized under {game}
 * @param {String} options.channel : streams from a comma separated list of channels
+* @param {String} options.game : streams categorized under {game}
+* @param {String} options.language : only shows streams of a certain language. Permitted values are locale ID strings, e.g. {en}, {fi}, {es-mx}
+* @param {String} options.stream_type : only shows streams from a certain type. Permitted values: {all}, {playlist}, {live}
 * @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
-* @param {Integer} options.client_id : only shows streams from applications of {client_id}
-* @param {String} options.stream_type : only shows streams from a certain type. Permitted values: {all}, {playlist}, {live}
-* @param {String} options.language : only shows streams of a certain language. Permitted values are locale ID strings, e.g. {en}, {fi}, {es-mx}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
 TwitchCtrl.prototype.getTopStreams = function(options) {
@@ -205,7 +207,7 @@ TwitchCtrl.prototype.searchChannels = function(query, limit = 25, offset = 0) {
 * @param {Integer} offset : object offset for pagination of results {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 100) {
+TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 0) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);
@@ -223,11 +225,10 @@ TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 100) {
 /**
 * @description : search for games based on specified query parameter
 * @param {String} query : a url-encoded search query
-* @param {String} type : {suggest}: suggests a list of games similar to query, e.g. {star} query might suggest {StarCraft II: Wings of Liberty}
-* @param {Boolean} live : if true, only returns games that are live on at least one channel  {Default: true}
+* @param {Boolean} live : if true, only returns games that are live on at least one channel  {Default: false}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.searchGames = function(query, type = 'suggest', live = true) {
+TwitchCtrl.prototype.searchGames = function(query, live = false) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);

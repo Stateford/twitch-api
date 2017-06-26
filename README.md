@@ -1,5 +1,5 @@
 # TWITCH-API
-### The twitch API made easy
+### The twitch API v5 made easy
 
 ## Twitch Class
 
@@ -28,7 +28,7 @@ const twitch = new Twitch({
 | `.getStreamUrl(user)`    | Returns the RTMP stream URL |
 | `.searchChannels(query, limit, offset)` | Returns a list of channels |
 | `.searchStreams(query, limit, offset)` | Returns a list of streams |
-| `.searchGames(query, type, live)` | Returns a list of games |
+| `.searchGames(query, live)` | Returns a list of games |
 
 ### Using
 
