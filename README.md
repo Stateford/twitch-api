@@ -21,14 +21,15 @@ const twitch = new Twitch({
 | METHOD  | DESCRIPTION |
 |:--------:|:-----------:|
 | `.getUser(user)` | Returns information about a user |
-| `.getFeaturedStreams(options)` | Returns twitch's featured streams |
-| `.getTopStreams(options)`      | Returns the current top streams |
-| `.getTopGames(options)`        | Returns the top games |
+| `.getFeaturedStreams(options*)` | Returns twitch's featured streams |
+| `.getTopStreams(options*)`      | Returns the current top streams |
+| `.getTopGames(options*)`        | Returns the top games |
 | `.getUsersByGame(game)`  |  Returns users by game |
 | `.getStreamUrl(user)`    | Returns the RTMP stream URL |
-| `.searchChannels(query, limit, offset)` | Returns a list of channels |
-| `.searchStreams(query, limit, offset)` | Returns a list of streams |
-| `.searchGames(query, live)` | Returns a list of games |
+| `.searchChannels(query, limit*, offset*)` | Returns a list of channels |
+| `.searchStreams(query, limit*, offset*)` | Returns a list of streams |
+| `.searchGames(query, live*)` | Returns a list of games |
+*Parameter is optional or has default values.
 
 ### Using
 
