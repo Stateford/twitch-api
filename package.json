@@ -1,6 +1,6 @@
 {
   "name": "twitch.tv-api",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "easy node interaction with the twitch api, with promises",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,10 @@
     "api",
     "twitch.tv"
   ],
-  "author": "idietmoran <idietmoran@gmail.com>",
+  "author": "idietmoran <idietmoran@gmail.com> (http://idietmoran.com)",
+  "contributors": [
+    "andyklimczak <andyklimczak@fastmail.com> (http://andyklimczak.io/)"
+  ],
   "repository": "idietmoran/twitch-api",
   "license": "MIT",
   "dependencies": {
