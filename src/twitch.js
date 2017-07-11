@@ -1,12 +1,13 @@
 const request = require('./bin/request.js');
 const url = require('url');
 const Promise = require('bluebird');
+const qs = require('querystring');
 
 /**
 * @description : Creates our twitch class
 * @param {Object<id, secret>} options : pases our client id and secret to the constructor
 */
-function TwitchCtrl(options) {
+function Twitch(options) {
     this.id = options.id;
     this.secret = options.secret;
 }
@@ -16,7 +17,7 @@ function TwitchCtrl(options) {
 * @param {String} http : passes an string to our request
 * @returns {Promise.<string, Error>} returns data from an http request;
 */
-TwitchCtrl.prototype.makeRequest = function(http) {
+Twitch.prototype.makeRequest = function(http) {
     return new Promise((resolve, reject) => {
         // set the headers in our request
             let headers = {
@@ -35,7 +36,7 @@ TwitchCtrl.prototype.makeRequest = function(http) {
 * @param {String} username : the username we want information from
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getUser = function(username) {
+Twitch.prototype.getUser = function(username) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = `https://api.twitch.tv/kraken/streams/${username}`;
@@ -56,14 +57,12 @@ TwitchCtrl.prototype.getUser = function(username) {
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolve JSON data or rejects an error
 */
-TwitchCtrl.prototype.getFeaturedStreams = function(options) {
+Twitch.prototype.getFeaturedStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/streams/featured"
         if(options) {
-            _buildOptions(options, data => {
-                url += data;
-            })
+            url += `?${qs.stringify(optionalParams, '&', '=')}`;
         }
         // make our request
         this.makeRequest(url)
@@ -85,15 +84,13 @@ TwitchCtrl.prototype.getFeaturedStreams = function(options) {
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopStreams = function(options) {
+Twitch.prototype.getTopStreams = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/streams";
 
         if(options) {
-            _buildOptions(options, data => {
-                url += data;
-            })
+            url += `?${qs.stringify(optionalParams, '&', '=')}`;
         }
             // make our request
             this.makeRequest(url)
@@ -112,15 +109,13 @@ TwitchCtrl.prototype.getTopStreams = function(options) {
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getTopGames = function(options) {
+Twitch.prototype.getTopGames = function(options) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/games/top";
 
         if(options) {
-            _buildOptions(options, data => {
-                url += data;
-            })
+            url += `?${qs.stringify(optionalParams, '&', '=')}`;
         }
 
         // make our request
@@ -138,7 +133,7 @@ TwitchCtrl.prototype.getTopGames = function(options) {
 * @param {String} game : the game we want to search
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.getUsersByGame = function(game) {
+Twitch.prototype.getUsersByGame = function(game) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         let url = `https://api.twitch.tv/kraken/streams/?game=${game}`;
@@ -157,7 +152,7 @@ TwitchCtrl.prototype.getUsersByGame = function(game) {
 * @param {String} user : the user we want to search
 * @returns {Promise.<string, Error>} : resolves link
 */
-TwitchCtrl.prototype.getStreamUrl = function(user) {
+Twitch.prototype.getStreamUrl = function(user) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         user = user.toLowerCase();
@@ -185,7 +180,7 @@ TwitchCtrl.prototype.getStreamUrl = function(user) {
 * @param {Integer} offset : object offset for pagination of results {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.searchChannels = function(query, limit = 25, offset = 0) {
+Twitch.prototype.searchChannels = function(query, limit = 25, offset = 0) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);
@@ -207,7 +202,7 @@ TwitchCtrl.prototype.searchChannels = function(query, limit = 25, offset = 0) {
 * @param {Integer} offset : object offset for pagination of results {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 0) {
+Twitch.prototype.searchStreams = function(query, limit = 25, offset = 0) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);
@@ -228,7 +223,7 @@ TwitchCtrl.prototype.searchStreams = function(query, limit = 25, offset = 0) {
 * @param {Boolean} live : if true, only returns games that are live on at least one channel  {Default: false}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-TwitchCtrl.prototype.searchGames = function(query, live = false) {
+Twitch.prototype.searchGames = function(query, live = false) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);
@@ -243,14 +238,4 @@ TwitchCtrl.prototype.searchGames = function(query, live = false) {
     });
 }
 
-function _buildOptions(options, callback) {
-    callback(Object.keys(options).reduce((params, option, index) => {
-        const encodedParam = `${encodeURIComponent(option)}=${encodeURIComponent(options[option])}`;
-        if(index === 0) {
-            return `?${encodedParam}`;
-        }
-        return `${params}&${encodedParam}`;
-    }, ''));
-}
-
-module.exports = TwitchCtrl;
+module.exports = Twitch;
