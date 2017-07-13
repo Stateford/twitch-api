@@ -62,7 +62,7 @@ Twitch.prototype.getFeaturedStreams = function(options) {
         // set our URL for working with the api
         let url = "https://api.twitch.tv/kraken/streams/featured"
         if(options) {
-            url += `?${qs.stringify(optionalParams, '&', '=')}`;
+            url += `?${qs.stringify(options, '&', '=')}`;
         }
         // make our request
         this.makeRequest(url)
@@ -90,7 +90,7 @@ Twitch.prototype.getTopStreams = function(options) {
         let url = "https://api.twitch.tv/kraken/streams";
 
         if(options) {
-            url += `?${qs.stringify(optionalParams, '&', '=')}`;
+            url += `?${qs.stringify(options, '&', '=')}`;
         }
             // make our request
             this.makeRequest(url)
@@ -115,7 +115,7 @@ Twitch.prototype.getTopGames = function(options) {
         let url = "https://api.twitch.tv/kraken/games/top";
 
         if(options) {
-            url += `?${qs.stringify(optionalParams, '&', '=')}`;
+            url += `?${qs.stringify(options, '&', '=')}`;
         }
 
         // make our request
