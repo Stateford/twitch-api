@@ -52,7 +52,7 @@ Twitch.prototype.getUser = function(username) {
 
 /**
 * @description : Gets featured streams
-* @param {Hash} options : optional query params
+* @param {Object} options : optional query params
 * @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolve JSON data or rejects an error
@@ -75,7 +75,7 @@ Twitch.prototype.getFeaturedStreams = function(options) {
 
 /**
 * @description : Makes an api call to retrieve all top streams on twitch
-* @param {Hash} options : optional query params
+* @param {Object} options : optional query params
 * @param {String} options.channel : streams from a comma separated list of channels
 * @param {String} options.game : streams categorized under {game}
 * @param {String} options.language : only shows streams of a certain language. Permitted values are locale ID strings, e.g. {en}, {fi}, {es-mx}
@@ -104,7 +104,7 @@ Twitch.prototype.getTopStreams = function(options) {
 
 /**
 * @description : Makes an API call to top games on twitch
-* @param {Hash} options : optional query params
+* @param {Object} options : optional query params
 * @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
 * @param {Integer} options.offset : object offset for pagination {Default: 0}
 * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
