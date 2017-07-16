@@ -11,7 +11,7 @@ The package [dotenv](https://github.com/motdotla/dotenv) is recommended for keep
 ```js
 const Twitch = require("twitch.tv-api");
 const twitch = new Twitch({
-    id: "YOUR ID HERE"
+    id: "YOUR ID HERE",
     secret: "YOUR SECRET HERE"
 });
 ```
