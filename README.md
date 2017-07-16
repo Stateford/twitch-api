@@ -76,6 +76,22 @@ twitch.getTopStreams()
     .catch(function(error) {
         console.error(error);
     });
+
+// using async/await
+async function foo() {
+    let data = await twitch.getTopStreams();
+    console.log(data);
+}
+
+// with error handling
+async function foo() {
+    try {
+        let data = await twitch.getTopStreams();
+        console.log(data);
+    } catch(err) {
+        throw err;
+    }
+}
 ```
 
 ### Example
