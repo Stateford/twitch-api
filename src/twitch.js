@@ -227,7 +227,7 @@ Twitch.prototype.searchGames = function(query, live = false) {
     return new Promise((resolve, reject) => {
         // set our URL for working with the api
         query = encodeURIComponent(query);
-        let url = `https://api.twitch.tv/kraken/search/games?query=${query}&type=${type}&live=${live}`;
+        let url = `https://api.twitch.tv/kraken/search/games?query=${query}&live=${live}`;
         // make our request
         this.makeRequest(url)
             .then(data => {
