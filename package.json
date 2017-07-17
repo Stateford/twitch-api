@@ -4,7 +4,7 @@
   "description": "easy node interaction with the twitch api, with promises",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "keywords": [
     "twitch",
@@ -21,6 +21,9 @@
     "bluebird": "^3.5.0"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0"
+    "chai": "^4.1.0",
+    "dotenv": "^4.0.0",
+    "mocha": "^3.4.2",
+    "nock": "^9.0.13"
   }
 }
