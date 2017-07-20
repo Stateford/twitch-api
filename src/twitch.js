@@ -14,12 +14,12 @@ function Twitch(options) {
 }
 
 /**
- * @method makeRequest
+ * @method makeRequest @private
  * @description : makes a request to protocol http or https server with correct API headers
  * @param {String} http : passes an string to our request
  * @returns {Promise.<string, Error>} returns data from an http request;
 */
-Twitch.prototype.makeRequest = function(http) {
+Twitch.prototype._makeRequest = function(http) {
     return new Promise((resolve, reject) => {
         // set the headers in our request
             let headers = {
@@ -34,17 +34,17 @@ Twitch.prototype.makeRequest = function(http) {
 }
 
 /**
- * @method getUserId
+ * @method getUserId @private
  * @description : gets user id from username
  * @param {String} username
  * @returns {Promise.<string, Error>}
  */
-Twitch.prototype.getUserId = function(username) {
+Twitch.prototype._getUserId = function(username) {
     return new Promise((resolve, reject) => {
         // set URL for working with the api
         let url = `https://api.twitch.tv/kraken/users?login=${username}`;
         // make request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 let json = JSON.parse(data);
                 resolve(json.users[0]._id);
@@ -53,19 +53,34 @@ Twitch.prototype.getUserId = function(username) {
 }
 
 /**
- * @method getUser
+ * @method getUserById @public
+ * @description : gets user data from the api
+ * @param {String} userId : the userid we want information from
+ * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
+*/
+Twitch.prototype.getUserById = function(userId) {
+    return new Promise((resolve, reject) => {
+        // set our URL for working with the api
+            let url = `https://api.twitch.tv/kraken/streams/${userId}`;
+            // make request
+            this._makeRequest(url)
+                .then(data => {
+                    resolve(JSON.parse(data));
+                }).catch(reject);
+    });
+}
+
+/**
+ * @method getUserByName @public
  * @description : gets user data from the api
  * @param {String} username : the username we want information from
  * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
 */
-Twitch.prototype.getUser = function(username) {
+Twitch.prototype.getUserByName = function(username) {
     return new Promise((resolve, reject) => {
-        this.getUserId(username)
+        this._getUserId(username)
             .then(userId => {
-                // set our URL for working with the api
-                let url = `https://api.twitch.tv/kraken/streams/${userId}`;
-                // make request
-                this.makeRequest(url)
+                this.getUserById(userId)
                     .then(data => {
                         resolve(JSON.parse(data));
                     }).catch(reject);
@@ -75,7 +90,7 @@ Twitch.prototype.getUser = function(username) {
 }
 
 /**
- * @method getFeaturedStreams
+ * @method getFeaturedStreams @public
  * @description : Gets featured streams
  * @param {Object} options : optional query params
  * @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
@@ -90,7 +105,7 @@ Twitch.prototype.getFeaturedStreams = function(options) {
             url += `?${qs.stringify(options, '&', '=')}`;
         }
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 resolve(JSON.parse(data));
             }).catch(reject);
@@ -98,7 +113,7 @@ Twitch.prototype.getFeaturedStreams = function(options) {
 }
 
 /**
- * @method getTopStreams
+ * @method getTopStreams @public
  * @description : Makes an api call to retrieve all top streams on twitch
  * @param {Object} options : optional query params
  * @param {String} options.channel : streams from a comma separated list of channels
@@ -118,7 +133,7 @@ Twitch.prototype.getTopStreams = function(options) {
             url += `?${qs.stringify(options, '&', '=')}`;
         }
             // make our request
-            this.makeRequest(url)
+            this._makeRequest(url)
                 .then(data => {
                     // resolve our data and parse as a JSON
                     resolve(JSON.parse(data));
@@ -127,7 +142,7 @@ Twitch.prototype.getTopStreams = function(options) {
 }
 
 /**
- * @method getTopGames
+ * @method getTopGames @public
  * @description : Makes an API call to top games on twitch
  * @param {Object} options : optional query params
  * @param {Integer} options.limit : maximum number of objects in array {Default: 25} {Maximum: 100}
@@ -144,7 +159,7 @@ Twitch.prototype.getTopGames = function(options) {
         }
 
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 // resolve our data and parse as a JSON
                 resolve(JSON.parse(data));
@@ -153,7 +168,7 @@ Twitch.prototype.getTopGames = function(options) {
 }
 
 /**
- * @method getUsersByGame
+ * @method getUsersByGame @public
  * @description : searches users by game
  * @param {String} game : the game we want to search
  * @returns {Promise.<string, Error>} : resolves JSON data or rejects an error
@@ -163,7 +178,7 @@ Twitch.prototype.getUsersByGame = function(game) {
         // set our URL for working with the api
         let url = `https://api.twitch.tv/kraken/streams/?game=${game}`;
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 // resolve our data and parse as a JSON
                 resolve(JSON.parse(data));
@@ -172,7 +187,7 @@ Twitch.prototype.getUsersByGame = function(game) {
 }
 
 /**
- * @method getStreamUrl
+ * @method getStreamUrl @public
  * @description : finds rtmp streams
  * @param {String} user : the user we want to search
  * @returns {Promise.<string, Error>} : resolves link
@@ -183,7 +198,7 @@ Twitch.prototype.getStreamUrl = function(user) {
         user = user.toLowerCase();
         let url = `http://api.twitch.tv/api/channels/${user}/access_token`;
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 data = JSON.parse(data);
                 let streamUrl = `http://usher.twitch.tv/api/channel/hls/${user}.m3u8?player=twitchweb&&token=${data.token}&sig=${data.sig}&allow_audio_only=true&allow_source=true&type=any&p={random}`
@@ -198,7 +213,7 @@ Twitch.prototype.getStreamUrl = function(user) {
 }
 
 /**
- * @method searchChannels
+ * @method searchChannels @public
  * @description : search for channels based on specified query parameter
  * @param {String} query : a channel is returned if the query parameter is matched entirely or partially, in the channel description or game name
  * @param {Integer} limit : maximum number of objects to return, sorted by number of followers {Default: 25} {Maximum: 100}
@@ -211,7 +226,7 @@ Twitch.prototype.searchChannels = function(query, limit = 25, offset = 0) {
         query = encodeURIComponent(query);
         let url = `https://api.twitch.tv/kraken/search/channels?query=${query}&limit=${limit}&offset=${offset}`;
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 // resolve our data and parse as a JSON
                 resolve(JSON.parse(data));
@@ -220,7 +235,7 @@ Twitch.prototype.searchChannels = function(query, limit = 25, offset = 0) {
 }
 
 /**
- * @method searchStreams
+ * @method searchStreams @public
  * @description : search for streams based on specified query parameter
  * @param {String} query : a stream is returned if the query parameter is matched entirely or partially, in the channel description or game name
  * @param {Integer} limit : maximum number of objects to return, sorted by number of followers {Default: 25} {Maximum: 100}
@@ -233,7 +248,7 @@ Twitch.prototype.searchStreams = function(query, limit = 25, offset = 0) {
         query = encodeURIComponent(query);
         let url = `https://api.twitch.tv/kraken/search/streams?query=${query}&limit=${limit}&offset=${offset}`;
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 // resolve our data and parse as a JSON
                 resolve(JSON.parse(data));
@@ -242,7 +257,7 @@ Twitch.prototype.searchStreams = function(query, limit = 25, offset = 0) {
 }
 
 /**
- * @method searchGames
+ * @method searchGames @public
  * @description : search for games based on specified query parameter
  * @param {String} query : a url-encoded search query
  * @param {Boolean} live : if true, only returns games that are live on at least one channel  {Default: false}
@@ -254,7 +269,7 @@ Twitch.prototype.searchGames = function(query, live = false) {
         query = encodeURIComponent(query);
         let url = `https://api.twitch.tv/kraken/search/games?query=${query}&live=${live}`;
         // make our request
-        this.makeRequest(url)
+        this._makeRequest(url)
             .then(data => {
                 // resolve our data and parse as a JSON
                 resolve(JSON.parse(data));
