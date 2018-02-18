@@ -82,7 +82,8 @@ Twitch.prototype.getUserByName = function(username) {
             .then(userId => {
                 this.getUserById(userId)
                     .then(data => {
-                        resolve(JSON.parse(data));
+                        // don't parse this, because _getUserId returns a parsed object
+                        resolve(data);
                     }).catch(reject);
                     
             }).catch(reject);
