@@ -20,7 +20,8 @@ const twitch = new Twitch({
 
 | METHOD  | DESCRIPTION |
 |:--------:|:-----------:|
-| `.getUser(user)` | Returns information about a user |
+| `.getUserByName(userName)` | Returns information about a user |
+| `.getUserById(userId)` | Returns information about a user |
 | `.getFeaturedStreams(options*)` | Returns twitch's featured streams |
 | `.getTopStreams(options*)`      | Returns the current top streams |
 | `.getTopGames(options*)`        | Returns the top games |
