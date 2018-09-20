@@ -18,12 +18,11 @@
   "repository": "idietmoran/twitch-api",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.5.0"
+    "bluebird": "^3.5.2"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
+    "chai": "^4.1.2",
     "dotenv": "^4.0.0",
-    "mocha": "^3.4.2",
-    "nock": "^9.0.13"
+    "nock": "^9.6.1"
   }
 }
