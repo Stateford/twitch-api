@@ -1,4 +1,4 @@
-const request = require('./bin/request.js');
+const request = require('./request.js');
 const url = require('url');
 const qs = require('querystring');
 const Promise = require('bluebird');
