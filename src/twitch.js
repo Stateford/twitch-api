@@ -47,6 +47,9 @@ Twitch.prototype.getUserId = function(username) {
         this.makeRequest(url)
             .then(data => {
                 let json = JSON.parse(data);
+                if (json.users[0] == null || json.users[0]._id == null) {
+                    return cosnole.error(`The user ${username} seems to not exist`);
+                }
                 resolve(json.users[0]._id);
             }).catch(reject);
     });
